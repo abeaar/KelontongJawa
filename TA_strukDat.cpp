@@ -247,6 +247,7 @@ void history(){
 main () {
     int menu;
     buat_ptb();
+	buathash();
 for (char back='y'; back=='y'; ) {
 
     system ("cls");
