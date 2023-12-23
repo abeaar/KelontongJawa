@@ -40,6 +40,9 @@ int key;
     key = kodenode % max;
     NB = new node;
     NB -> kode = kodenode;
+    NB -> nama = namanode;
+    NB -> kode = kodenode;
+    NB->harga = harganode;
     NB -> kanan = NULL;
     NB -> kiri = NULL;
 
@@ -84,7 +87,7 @@ void sisipPtb(int kodenode, string namanode, int harganode){
 }
 
 void input (){
-int banyak, inputharga, inputkode;
+int inputharga, inputkode;
 string inputnama;
 cout << "Masukan Data Barang : " << endl; 
     for (char lagi = 'y'; lagi == 'y';)
@@ -151,23 +154,56 @@ void output(){
 }
 
 void searchHash(int carikode) {
-    
+     int key = carikode % max;
+    if (awal[key] != NULL) {
+        bantu = awal[key];
+        while (bantu != NULL && bantu->kode != carikode) {
+            bantu = bantu->kanan;
+        }
+        if (bantu != NULL && bantu->kode == carikode) {
+            cout << "Data ditemukan pada hash key " << key << ":\n";
+            cout << "Kode Produk: " << bantu->kode << "\nNama: " << bantu->nama << "\nHarga: " << bantu->harga << "\n" << endl;
+        } else {
+            cout << "Data tidak ditemukan." << endl;
+        }
+    } else {
+        cout << "Data tidak ditemukan." << endl;
+    }
 }
-void searchPTB(string cariNama) {
 
+void searchPTB(string cariNama) {
+	if (!ptb_kosong()) {
+        bantu = akar;
+        while (bantu != NULL && bantu->nama != cariNama) {
+            if (cariNama < bantu->nama) {
+                bantu = bantu->kiri;
+            } else {
+                bantu = bantu->kanan;
+            }
+        }
+        if (bantu != NULL && bantu->nama == cariNama) {
+            cout << "Data ditemukan pada PTB:\n";
+            cout << "Kode Produk: " << bantu->kode << "\nNama: " << bantu->nama << "\nHarga: " << bantu->harga << "\n" << endl;
+        } else {
+            cout << "Data tidak ditemukan." << endl;
+        }
+    } else {
+        cout << "Data tidak ditemukan." << endl;
+    }
 }
 
 void search(){
     int menu, carikode;
     string cariNama;
-    for (char back = 'y'; back =='y';){
+    for (char back = 'n'; back =='n';){
         cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
         cout << "|    Selamat Datang di Menu Pencarian     |"<< endl;
         cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
         cout << "| ID Barang                               |"<< endl;
         cout << "| Nama Barang                             |"<< endl;
         cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
-        cout << "pilih :"<< endl;
+        cout << "pilih :";
+        cin >> menu;
         switch (menu)
         {
         case 1:
@@ -185,6 +221,9 @@ void search(){
         default:
             break;
         }
+		cout << "\n";
+		cout << "Kembali ke menu utama? [y/n] : "; 
+		cin >> back;
     
     }
 }
