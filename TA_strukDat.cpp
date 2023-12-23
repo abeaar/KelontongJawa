@@ -213,6 +213,8 @@ void search(){
         cout << "| 1. ID Barang                            |"<< endl;
         cout << "| 2. Nama Barang                          |"<< endl;
         cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
+        cout << "| 3. back to menu                         |"<< endl;
+        cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
         cout << "pilih : ";
         cin >> menu;
         switch (menu)
@@ -238,7 +240,9 @@ void search(){
 void hapus(){
 
 }
-void history(){}
+void history(){
+    
+}
 
 main () {
     int menu;
