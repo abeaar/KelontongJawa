@@ -128,32 +128,34 @@ void postorder (node *akar){
     }
 }
 void bacaHash(){
-    cout << "Table Hash nya :" << endl;
-    for (int i = 0; i < max; i++){
-    if(awal[i]!=0){
-        bantu = awal[i];
-        cout << endl << bantu-> kode;
-        while (bantu->kanan!= NULL){
-            bantu = bantu-> kanan;
-            cout << " -> "<< bantu -> kode;
+   for (int i = 0; i < max; i++){
+        if(awal[i]!=0){
+            bantu = awal[i];
+            cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
+            cout << "| kode  : "<< bantu->kode << endl;
+            cout << "| Nama  : "<< bantu->nama << endl;
+            cout << "| Harga : " << bantu->harga << endl;
+            while (bantu->kanan!= NULL){
+                bantu = bantu-> kanan;
+            cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
+            cout << "| kode  : "<< bantu->kode << endl;
+            cout << "| Nama  : "<< bantu->nama << endl;
+            cout << "| Harga : " << bantu->harga << endl;
+            }
         }
-            cout << endl;
     }
-    }
+        cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
 }
 void output(){
-    cout << "\nPre-order : ";
-    preorder(akar);
-    cout <<"\nIn-order : ";
-    inorder(akar);
-    cout << "\nPost-order : ";
-    postorder(akar);
-    cout << endl;
+    cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
+    cout << "|      Selamat Datang di Menu output      |"<< endl;
+    cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;    
     bacaHash();
     return;
 }
 
 void searchHash(int carikode) {
+ 
      int key = carikode % max;
     if (awal[key] != NULL) {
         bantu = awal[key];
@@ -162,7 +164,11 @@ void searchHash(int carikode) {
         }
         if (bantu != NULL && bantu->kode == carikode) {
             cout << "Data ditemukan pada hash key " << key << ":\n";
-            cout << "Kode Produk: " << bantu->kode << "\nNama: " << bantu->nama << "\nHarga: " << bantu->harga << "\n" << endl;
+            cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
+            cout << "| kode  : "<< bantu->kode << endl;
+            cout << "| Nama  : "<< bantu->nama << endl;
+            cout << "| Harga : " << bantu->harga << endl;
+            cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
         } else {
             cout << "Data tidak ditemukan." << endl;
         }
@@ -183,7 +189,11 @@ void searchPTB(string cariNama) {
         }
         if (bantu != NULL && bantu->nama == cariNama) {
             cout << "Data ditemukan pada PTB:\n";
-            cout << "Kode Produk: " << bantu->kode << "\nNama: " << bantu->nama << "\nHarga: " << bantu->harga << "\n" << endl;
+            cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
+            cout << "| kode  : "<< bantu->kode << endl;
+            cout << "| Nama  : "<< bantu->nama << endl;
+            cout << "| Harga : " << bantu->harga << endl;
+            cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
         } else {
             cout << "Data tidak ditemukan." << endl;
         }
@@ -196,13 +206,14 @@ void search(){
     int menu, carikode;
     string cariNama;
     for (char back = 'n'; back =='n';){
+        system("cls");
         cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
         cout << "|    Selamat Datang di Menu Pencarian     |"<< endl;
         cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
-        cout << "| ID Barang                               |"<< endl;
-        cout << "| Nama Barang                             |"<< endl;
+        cout << "| 1. ID Barang                            |"<< endl;
+        cout << "| 2. Nama Barang                          |"<< endl;
         cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
-        cout << "pilih :";
+        cout << "pilih : ";
         cin >> menu;
         switch (menu)
         {
@@ -219,12 +230,9 @@ void search(){
             system("pause");
             break;
         default:
+            back = 'y';
             break;
         }
-		cout << "\n";
-		cout << "Kembali ke menu utama? [y/n] : "; 
-		cin >> back;
-    
     }
 }
 void hapus(){
