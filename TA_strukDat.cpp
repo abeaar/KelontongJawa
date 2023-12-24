@@ -10,20 +10,24 @@ struct node
     node *kanan, *kiri;
 };
 node *akar, *p, *b, *bantu, *del, *NB;
-node *hashTable[max],*awal[max], *akhir[max];
+node *akarHistory, *pHistory, *bHistory;
+node hashTable[max], *awal[max], *akhir[max];
 
 
 void buathash(){
     for (int i = 0; i < max; i++)
     {
-        hashTable[i]=new node;
-        hashTable[i]= NULL;
-        awal[i]= hashTable[i];
-        akhir[i] = hashTable[i];
+        hashTable[i].kode = -1;
     }
 }
 
 void buat_ptb (){
+    node *ptb;
+    ptb=NULL;
+    akar=ptb;
+}
+
+void buat_ptb_history (){
     node *ptb;
     ptb=NULL;
     akar=ptb;
@@ -35,14 +39,33 @@ int ptb_kosong(){
     else return (false);
 }
 
+int ptb_history_kosong(){
+    if (akarHistory==NULL)
+    return (true);
+    else return (false);
+}
+
 void sisipHash(int kodenode, string namanode, int harganode){
-int key;
+    int key;
     key = kodenode % max;
+    int initialkey = key;
+	while (awal[key] != nullptr && awal[key]->kode != kodenode) {
+        key = (key + 1) % max;  
+        if (key == initialkey) {
+            cout << "Tabel penuh. Tidak dapat menyisipkan data." << endl;
+            return;
+        }
+    }
+
     NB = new node;
     NB -> kode = kodenode;
     NB -> nama = namanode;
-    NB -> kode = kodenode;
-    NB->harga = harganode;
+    NB -> harga = harganode;
+
+    hashTable[key].kode = kodenode;
+    hashTable[key].nama = namanode;
+    hashTable[key].harga = harganode;
+
     NB -> kanan = NULL;
     NB -> kiri = NULL;
 
@@ -51,7 +74,7 @@ int key;
         akhir[key]=NB;
     }
     else{
-        akhir[key]-> kanan = NB;
+        akhir[key]->kanan = NB;
         NB-> kiri = akhir[key];
         akhir[key] = NB;
     }
@@ -83,7 +106,34 @@ void sisipPtb(int kodenode, string namanode, int harganode){
             else
                 b->kanan=NB;
     }
-   
+}
+
+void sisipPtbHistory(int kodenode, string namanode, int harganode){
+   node *NB;
+   NB = new node;
+   NB->kode = kodenode;
+   NB->nama = namanode;
+   NB->harga = harganode;
+   NB->kiri = NULL;
+   NB->kanan = NULL;
+   if (ptb_history_kosong())
+   {
+    akarHistory = NB;
+   } else {
+        bHistory=akarHistory;
+        pHistory=akarHistory;
+        while (pHistory!=NULL && namanode !=bHistory->nama){
+            bHistory=pHistory;
+            if (namanode<pHistory-> nama)
+                pHistory=bHistory-> kiri;
+            else 
+                pHistory=bHistory-> kanan;
+        }
+            if (namanode<bHistory-> nama)
+                bHistory->kiri=NB;
+            else
+                bHistory->kanan=NB;
+    }
 }
 
 void input (){
@@ -106,7 +156,7 @@ cout << "Masukan Data Barang : " << endl;
 
 void preorder(node *akar){
     if (akar!= NULL){
-        cout <<" "<<akar-> nama ;
+        cout <<akar-> nama << ", ";
         preorder (akar->kiri);
         preorder (akar->kanan);
     }
@@ -115,7 +165,7 @@ void preorder(node *akar){
 void inorder(node *akar){
     if (akar != NULL){
         inorder (akar-> kiri);
-        cout <<" "<<akar-> nama;
+        cout <<akar-> nama << ", ";
         inorder (akar-> kanan);
     }
 }
@@ -124,54 +174,51 @@ void postorder (node *akar){
     if (akar != NULL){
         postorder (akar -> kiri);
         postorder (akar-> kanan);
-        cout <<" "<<akar-> nama;
+        cout <<akar-> nama << ", ";
     }
 }
 void bacaHash(){
-   for (int i = 0; i < max; i++){
-        if(awal[i]!=0){
-            bantu = awal[i];
-            cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
-            cout << "| kode  : "<< bantu->kode << endl;
-            cout << "| Nama  : "<< bantu->nama << endl;
-            cout << "| Harga : " << bantu->harga << endl;
-            while (bantu->kanan!= NULL){
-                bantu = bantu-> kanan;
-            cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
-            cout << "| kode  : "<< bantu->kode << endl;
-            cout << "| Nama  : "<< bantu->nama << endl;
-            cout << "| Harga : " << bantu->harga << endl;
-            }
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
+        cout << "|      Selamat Datang di Menu output      |"<< endl;
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
+        cout << "Daftar barang : " << endl << endl;
+        cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
+        cout << "| Kode    | Nama                | harga              |" << endl;
+        cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
+        for(int i = 0; i < max; i++){
+        if(hashTable[i].kode != -1){
+            cout << "| " << left << setw(8) << setfill(' ') << hashTable[i].kode;
+            cout << "| " << setw(20) << setfill(' ') << hashTable[i].nama;
+            cout << "| Rp. " << setw(15) << setfill(' ') << hashTable[i].harga << "|"<< endl;
         }
     }
-        cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
+        cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
 }
 void output(){
-    cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
-    cout << "|      Selamat Datang di Menu output      |"<< endl;
-    cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;    
+
     bacaHash();
     return;
 }
 
 void searchHash(int carikode) {
- 
-     int key = carikode % max;
-    if (awal[key] != NULL) {
-        bantu = awal[key];
-        while (bantu != NULL && bantu->kode != carikode) {
-            bantu = bantu->kanan;
+    int key = carikode % max;
+    int initialkey = key;
+    while (awal[key] != nullptr && awal[key]->kode != carikode) {
+        key = (key + 1) % max;
+        if (key == initialkey) {
+            break; 
         }
-        if (bantu != NULL && bantu->kode == carikode) {
-            cout << "Data ditemukan pada hash key " << key << ":\n";
-            cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
-            cout << "| kode  : "<< bantu->kode << endl;
-            cout << "| Nama  : "<< bantu->nama << endl;
-            cout << "| Harga : " << bantu->harga << endl;
-            cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
-        } else {
-            cout << "Data tidak ditemukan." << endl;
-        }
+    }
+
+    if (awal[key] != nullptr && awal[key]->kode == carikode) {
+        cout << "Data ditemukan pada hash key " << key << " :\n";
+        cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
+        cout << "| Kode    | Nama                | harga              |" << endl;
+        cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
+        cout << "| " << left << setw(8) << setfill(' ') << awal[key]->kode;
+        cout << "| " << setw(20) << setfill(' ') << awal[key]->nama;
+        cout << "| Rp. " << setw(15) << setfill(' ') << awal[key]->harga << "|"<< endl;
+        cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
     } else {
         cout << "Data tidak ditemukan." << endl;
     }
@@ -187,13 +234,16 @@ void searchPTB(string cariNama) {
                 bantu = bantu->kanan;
             }
         }
+        
         if (bantu != NULL && bantu->nama == cariNama) {
             cout << "Data ditemukan pada PTB:\n";
-            cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
-            cout << "| kode  : "<< bantu->kode << endl;
-            cout << "| Nama  : "<< bantu->nama << endl;
-            cout << "| Harga : " << bantu->harga << endl;
-            cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
+            cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
+            cout << "| Kode    | Nama                | harga              |" << endl;
+            cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
+            cout << "| " << left << setw(8) << setfill(' ') << bantu->kode;
+            cout << "| " << setw(20) << setfill(' ') << bantu->nama;
+            cout << "| Rp. " << setw(15) << setfill(' ') << bantu->harga << "|"<< endl;
+            cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;            
         } else {
             cout << "Data tidak ditemukan." << endl;
         }
@@ -206,62 +256,171 @@ void search(){
     int menu, carikode;
     string cariNama;
     for (char back = 'n'; back =='n';){
-        system("cls");
-        cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
+    system("cls");
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
         cout << "|    Selamat Datang di Menu Pencarian     |"<< endl;
-        cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
         cout << "| 1. ID Barang                            |"<< endl;
         cout << "| 2. Nama Barang                          |"<< endl;
-        cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
-        cout << "| 3. back to menu                         |"<< endl;
-        cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
+        cout << "| 3. back                                 |"<< endl;
+        cout <<"+"<< setw (42) << setfill ('-') << '+' << endl;
         cout << "pilih : ";
         cin >> menu;
         switch (menu)
         {
         case 1:
-            cout << "Masukan ID yang ingin dicari : "; cin >> carikode;
-            system("cls");
+            cout << "\nList kode :" << endl; 
+                for(int i = 0; i < max; i++){
+                if(hashTable[i].kode != -1){
+                    cout << hashTable[i].kode << ", ";
+                }
+            }
+            cout << endl;
+            cout << "\nMasukan ID yang ingin dicari : "; cin >> carikode;
             searchHash(carikode);
-            system("pause");
             break;
         case 2:
-            cout << "Masukan Nama yang ingin dicari : "; cin >> cariNama;
-            system("cls");
+            cout << "\nList Nama :" << endl;
+            postorder(akar);
+            cout << endl;
+            cout << "\nMasukan Nama yang ingin dicari : "; cin >> cariNama;
             searchPTB(cariNama);
-            system("pause");
             break;
         default:
-            back = 'y';
             break;
         }
+		cout << "\n";
+		cout << "Kembali ke menu utama? [y/n] : "; 
+		cin >> back;
     }
 }
 void hapus(){
+    int carikode;
+    string nama;
 
-}
-void history(){
+    bacaHash();
+
+    cout << "kode barang : "; cin >> carikode;
+
+    // cari key
+    int key = carikode % max;
+    int initialkey = key;
+
+    if(hashTable[key].kode != carikode) {
+        while (awal[key] != nullptr && awal[key]->kode != carikode) {
+            key = (key + 1) % max;
+            if (key == initialkey) {
+                break; 
+            }
+        }
+    }
+
+    if(hashTable[key].kode != -1){
+        cout << "\nData yang dipilih: \n";
+        cout << "Kode\t: " << hashTable[key].kode << endl;
+        cout << "Nama\t: " << hashTable[key].nama << endl;
+        cout << "Harga\t: " << hashTable[key].harga << endl;
+
+        char yakin;
+        cout << "Yakin ingin hapus?[y/n] : "; cin >> yakin;
+        
+        if(yakin == 'y' || yakin == 'Y'){
+            //delete hash
+            sisipPtbHistory(hashTable[key].kode, hashTable[key].nama, hashTable[key].harga);
+            hashTable[key].kode = -1;
+            awal[key] = nullptr;
+
+            //delete ptb
+            b = akar;
+            p = akar;
+            while (p != NULL && hashTable[key].nama != p->nama) {
+                b = p;
+                if (hashTable[key].nama < p->nama)
+                    p = b->kiri;
+                else
+                    p = b->kanan;
+        }
     
+            node *temp;
+            if (p->kiri == NULL && p->kanan == NULL) {
+                if (b == akar && p == akar)
+                    akar = NULL;
+                else {
+                    if (p == b->kiri)
+                        b->kiri = NULL;
+                    else
+                        b->kanan = NULL;
+                }
+                delete p;
+            } else if (p->kiri != NULL && p->kanan != NULL) {
+                temp = p->kiri;
+                b = p;
+                while (temp->kanan != NULL) {
+                    b = temp;
+                    temp = temp->kanan;
+                }
+                p->kode = temp->kode;
+                p->nama = temp->nama;
+                p->harga = temp->harga;
+                if (b == p)
+                    b->kiri = temp->kiri;
+                else
+                    b->kanan = temp->kiri;
+                delete temp;
+            } else if (p->kiri != NULL && p->kanan == NULL) {
+                if (b == p)
+                    akar = p->kiri;
+                else {
+                    if (p == b->kiri)
+                        b->kiri = p->kiri;
+                    else
+                        b->kanan = p->kiri;
+                }
+                delete p;
+            } else if (p->kiri == NULL && p->kanan != NULL) {
+                if (b == p)
+                    akar = p->kanan;
+                else {
+                    if (p == b->kanan)
+                        b->kanan = p->kanan;
+                    else
+                        b->kiri = p->kanan;
+                }
+                delete p;
+            }
+                }
+
+    } else {
+        cout << "\nDATA TIDAK DITEMUKAN\n";
+    }
+}
+
+void history(){
+    cout << "HISTORY BARANG\n\n";
+    cout << "Preorder : "; preorder(akarHistory); cout << endl;
+    cout << "Inorder : "; inorder(akarHistory); cout << endl;
+    cout << "Postorder : "; postorder(akarHistory); cout << endl;
 }
 
 main () {
     int menu;
     buat_ptb();
-	buathash();
+    buat_ptb_history();
+    buathash();
 for (char back='y'; back=='y'; ) {
 
     system ("cls");
-    cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
+    cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
     cout << "|     SELAMAT DATANG DI TOKO SERBA ADA    |"<< endl;
-    cout <<"|"<< setw (42) << setfill ('=') << '|' << endl;
+    cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
     cout << "| 1. input                                |"<< endl;
     cout << "| 2. output                               |"<< endl;
     cout << "| 3. search                               |"<< endl;
     cout << "| 4. delete                               |"<< endl;
     cout << "| 5. cek history                          |"<< endl;
-    cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
+    cout <<"+"<< setw (42) << setfill ('-') << '+' << endl;
     cout << "| 6. exit                                 |"<< endl;
-    cout <<"|"<< setw (42) << setfill ('-') << '|' << endl;
+    cout <<"+"<< setw (42) << setfill ('-') << '+' << endl;
     cout << "pilih : ";
     cin>>menu;
     switch (menu)
