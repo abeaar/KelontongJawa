@@ -311,14 +311,12 @@ void hapus(){
     int key = carikode % max;
     int initialkey = key;
 
-    if(hashTable[key].kode != carikode) {
-        while (awal[key] != nullptr && awal[key]->kode != carikode) {
-            key = (key + 1) % max;
-            if (key == initialkey) {
-                break; 
-            }
-        }
-    }
+while (hashTable[key].kode != carikode) {
+        key = (key + 1) % max;
+        if (key == initialkey) {
+            break; 
+}
+}
 
     if(hashTable[key].kode != -1){
         char yakin;
