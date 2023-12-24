@@ -139,6 +139,9 @@ void sisipPtbHistory(int kodenode, string namanode, int harganode){
 void input (){
 int inputharga, inputkode;
 string inputnama;
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
+        cout << "|     Selamat Datang di Menu Input        |"<< endl;
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
 cout << "Masukan Data Barang : " << endl; 
     for (char lagi = 'y'; lagi == 'y';)
     {
@@ -178,9 +181,6 @@ void postorder (node *akar){
     }
 }
 void bacaHash(){
-        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
-        cout << "|      Selamat Datang di Menu output      |"<< endl;
-        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
         cout << "Daftar barang : " << endl << endl;
         cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
         cout << "| Kode    | Nama                | harga              |" << endl;
@@ -195,7 +195,9 @@ void bacaHash(){
         cout <<"+"<< setw (53) << setfill ('-') << '+' << endl;
 }
 void output(){
-
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
+        cout << "|      Selamat Datang di Menu output      |"<< endl;
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
     bacaHash();
     return;
 }
@@ -297,10 +299,13 @@ void search(){
 void hapus(){
     int carikode;
     string nama;
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
+        cout << "|      Selamat Datang di Menu Hapus       |"<< endl;
+        cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
 
     bacaHash();
 
-    cout << "kode barang : "; cin >> carikode;
+    cout << "kode barang yg ingin dihapus : "; cin >> carikode;
 
     // cari key
     int key = carikode % max;
@@ -316,11 +321,6 @@ void hapus(){
     }
 
     if(hashTable[key].kode != -1){
-        cout << "\nData yang dipilih: \n";
-        cout << "Kode\t: " << hashTable[key].kode << endl;
-        cout << "Nama\t: " << hashTable[key].nama << endl;
-        cout << "Harga\t: " << hashTable[key].harga << endl;
-
         char yakin;
         cout << "Yakin ingin hapus?[y/n] : "; cin >> yakin;
         
@@ -396,9 +396,12 @@ void hapus(){
 }
 
 void history(){
+    cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
+    cout << "|     SELAMAT DATANG DI Menu History      |"<< endl;
+    cout <<"+"<< setw (42) << setfill ('=') << '+' << endl;
     cout << "HISTORY BARANG\n\n";
-    cout << "Preorder : "; preorder(akarHistory); cout << endl;
-    cout << "Inorder : "; inorder(akarHistory); cout << endl;
+    cout << "Preorder  : "; preorder(akarHistory); cout << endl;
+    cout << "Inorder   : "; inorder(akarHistory); cout << endl;
     cout << "Postorder : "; postorder(akarHistory); cout << endl;
 }
 
