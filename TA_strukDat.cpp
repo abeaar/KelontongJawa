@@ -205,12 +205,12 @@ void output(){
 void searchHash(int carikode) {
     int key = carikode % max;
     int initialkey = key;
-    while (awal[key] != nullptr && awal[key]->kode != carikode) {
+while (hashTable[key].kode != carikode) {
         key = (key + 1) % max;
         if (key == initialkey) {
             break; 
-        }
-    }
+}
+}
 
     if (awal[key] != nullptr && awal[key]->kode == carikode) {
         cout << "Data ditemukan pada hash key " << key << " :\n";
